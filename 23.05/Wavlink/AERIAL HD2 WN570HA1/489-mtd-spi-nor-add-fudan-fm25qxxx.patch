@@ -1,0 +1,63 @@
+diff --git a/drivers/mtd/spi-nor/Makefile b/drivers/mtd/spi-nor/Makefile
+index e347b435a038..ef4a4c792694 100644
+--- a/drivers/mtd/spi-nor/Makefile
++++ b/drivers/mtd/spi-nor/Makefile
+@@ -6,6 +6,7 @@ spi-nor-objs			+= catalyst.o
+ spi-nor-objs			+= eon.o
+ spi-nor-objs			+= esmt.o
+ spi-nor-objs			+= everspin.o
++spi-nor-objs			+= fudan.o
+ spi-nor-objs			+= fujitsu.o
+ spi-nor-objs			+= gigadevice.o
+ spi-nor-objs			+= intel.o
+diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+index 0a78045ca1d9..1ca748f31c65 100644
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -1620,6 +1620,7 @@ static const struct spi_nor_manufacturer *manufacturers[] = {
+ 	&spi_nor_eon,
+ 	&spi_nor_esmt,
+ 	&spi_nor_everspin,
++	&spi_nor_fudan,
+ 	&spi_nor_fujitsu,
+ 	&spi_nor_gigadevice,
+ 	&spi_nor_intel,
+diff --git a/drivers/mtd/spi-nor/core.h b/drivers/mtd/spi-nor/core.h
+index 25423225c29d..ab51ac388d5b 100644
+--- a/drivers/mtd/spi-nor/core.h
++++ b/drivers/mtd/spi-nor/core.h
+@@ -614,6 +614,7 @@ extern const struct spi_nor_manufacturer spi_nor_catalyst;
+ extern const struct spi_nor_manufacturer spi_nor_eon;
+ extern const struct spi_nor_manufacturer spi_nor_esmt;
+ extern const struct spi_nor_manufacturer spi_nor_everspin;
++extern const struct spi_nor_manufacturer spi_nor_fudan;
+ extern const struct spi_nor_manufacturer spi_nor_fujitsu;
+ extern const struct spi_nor_manufacturer spi_nor_gigadevice;
+ extern const struct spi_nor_manufacturer spi_nor_intel;
+diff --git a/drivers/mtd/spi-nor/fudan.c b/drivers/mtd/spi-nor/fudan.c
+new file mode 100644
+index 000000000000..764fbadf1ba5
+--- /dev/null
++++ b/drivers/mtd/spi-nor/fudan.c
+@@ -0,0 +1,21 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/mtd/spi-nor.h>
++
++#include "core.h"
++
++static const struct flash_info fudan_nor_parts[] = {
++	/* Fudan */
++	{ "fm25q64", INFO(0xa14017, 0, 64 * 1024, 128,
++					  SECT_4K | SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB |
++					  SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ)},
++	{ "fm25q128", INFO(0xa14018, 0, 64 * 1024, 256,
++					  SECT_4K | SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB |
++					  SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ)},
++};
++
++const struct spi_nor_manufacturer spi_nor_fudan = {
++	.name = "fudan",
++	.parts = fudan_nor_parts,
++	.nparts = ARRAY_SIZE(fudan_nor_parts),
++};
