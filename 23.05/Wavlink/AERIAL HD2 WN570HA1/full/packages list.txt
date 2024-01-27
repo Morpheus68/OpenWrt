@@ -1,4 +1,4 @@
-
+List packages in firmware:
 Package: kmod-mt76x0-common
 Version: 5.15.147+2023-08-14-b14c2351-1
 Depends: kernel (= 5.15.147-1-a0c20b990602707d7e7460bf9b2a1df3), kmod-mac80211, kmod-mt76x02-common
